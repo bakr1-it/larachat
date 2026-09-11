@@ -45,3 +45,39 @@ php artisan boost:install
 
 Boost replaces these bootstrap instructions with guidelines tailored to the application. After installation, read `AGENTS.md` again and continue with the user's original request using the generated guidelines.
 </laravel-boost-guidelines>
+
+## Chat Formatting Guidelines / قواعد تنسيق النص في الشات
+
+### Strict Arabic & English Separation / فصل تام بين العربي والإنجليزي
+يمنع منعاً باتاً دمج أي كلمة إنجليزية أو اسم ملف أو مصطلح إنجليزي في نفس السطر مع الكلمات العربية.
+يجب وضع كل كلمة أو مصطلح إنجليزي في سطر منفصل بمفرده، مع وضع سطر فارغ بين كل سطر وسطر لمنع محرر الشات من دمج الأسطر.
+
+**مثال التنسيق المعتمد بالتفصيل:**
+
+سبب المشكلة: بيئة التشغيل المحلية لديك في
+
+Laragon 
+
+تعتمد على إصدار 
+
+PHP 8.2.12 
+
+بينما الحزم المعرفة في ملف 
+
+composer.json 
+
+مثل 
+
+laravel/framework 
+
+و 
+
+pestphp/pest 
+
+تطلب إصدار 
+
+PHP 8.3 
+
+أو أحدث.
+
+
