@@ -14,8 +14,8 @@ console.log("AuthenticatedLayout is render");
         useState(false);
 
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
-            <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
+        <div className="h-screen flex flex-col bg-gray-100 dark:bg-gray-900 overflow-hidden">
+    <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-16 justify-between">
                         <div className="flex">
@@ -167,7 +167,7 @@ console.log("AuthenticatedLayout is render");
 
 
 
-            <main>{children}</main>
+            <main className='flex-1 flex flex-col overflow-hidden'>{children}</main>
         </div>
     );
 }

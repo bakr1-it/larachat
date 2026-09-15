@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
+use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -18,11 +19,17 @@ Route::get('/', function () {
 Route::middleware(["auth"])
 ->group(function (){
 Route::get("/home",[HomeController::class , "home"])->name("dashboard");
+Route::get("/user/{user}",function(){
+
+})->name("chat.user");
+Route::get("/group/{group}",function(){
+
+})->name("chat.group");
 });
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
+Route::get("/test",[User::class , "getUserExceptCurrentUser"]);
 require __DIR__.'/auth.php';

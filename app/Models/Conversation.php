@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Resources\userResource;
 use Illuminate\Database\Eloquent\Model;
 
 class Conversation extends Model
@@ -19,5 +20,14 @@ public function receiver(){
 }
 public function lastMessaeg(){
     return $this->belongsTo(Message::class,"last_message_id");
+}
+public static function getConversationForSidebar(User $user){
+$users= User::getUserExceptCurrentUser($user);
+$groups =Group::getGroupForCurrentUser($user);
+return $users->map(function ($user){
+    return $user->toConversationArray();
+})->concat($groups->map(function ($group){
+return $group->toConversationArray();
+}));
 }
 }

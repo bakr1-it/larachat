@@ -12,8 +12,16 @@ export default defineConfig({
         tailwindcss(),
         react(),
     ],
-    server: {
+server: {
+    host: 'localhost',
+    port: 5173,
+    cors: true,
+    hmr: {
         host: 'localhost',
-        cors: true,
     },
+    watch: {
+        usePolling: true,
+        interval: 100,
+    },
+},
 });
