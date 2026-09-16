@@ -8,6 +8,7 @@ const ConversationItem = ({
     selectedConversation = null,
     online = null,
 }) => {
+
     const page = usePage();
     const currentUser = page.props.auth.user;
     let classes = " border-gray-700 bg-black/20 ";
@@ -23,7 +24,7 @@ const ConversationItem = ({
             conversation.is_group &&
             selectedConversation.id === conversation.id
         ) {
-            classes = " border-blue-500 bg-black/20 ";
+            classes = " border-blue-500 border-red-500 bg-slate-800 ";
         }
     }
 return (
@@ -38,7 +39,7 @@ return (
             }
             preserveState
             className={
-                "conversation-item  flex  items-center gap-2 p-2 text-gray-300 transition-all cursor-pointer border-l-4 hover:bg-black/30 " +
+                "conversation-item  rounded-bl-xl flex  items-center gap-2 p-2 text-gray-300 transition-all cursor-pointer border-l-4 hover:bg-black/30 " +
                 classes +
                 (conversation.is_user && currentUser?.is_admin
                     ? " pr-2"
@@ -62,13 +63,13 @@ return (
                         {conversation.name}
                     </h3>
                     {conversation.last_message_date && (
-                        <span className="text-nowrap">
+                        <span className="text-nowrap text-xs text-gray-400">
                             {conversation.last_message_date}
                         </span>
                     )}
                 </div>
                 {conversation.last_message && (
-                    <p className="text-xs text-nowrap overflow-hidden text-ellipsis">
+                    <p className="text-xs text-nowrap overflow-hidden text-ellipsis text-gray-400">
                         {conversation.last_message}
                     </p>
                 )}

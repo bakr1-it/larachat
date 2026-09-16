@@ -35,29 +35,28 @@ class User extends Authenticatable
         return $this->belongsToMany(Group::class , "group_user" );
     }
 public static function getUserExceptCurrentUser(User $user){
-$userId= $user->id;
-$query = User::select(["users.*","messages.body as last_message","messages.created_at as last_messages_date"])
-->where("users.id","!=",$userId)
-->when(!$user->is_admin, function ($query){
-    return $query->whereNull("users.blocked_at");
-})
-->leftJoin('conversations', function ($join) {
-    $join->on(function ($query) {
-        $query->where('conversations.sender_id', '=', 'users.id')
-              ->where('conversations.receiver_id', '=', Auth::id());
+    $userId = $user->id;
+    $query = User::select(["users.*", "messages.body as last_message", "messages.created_at as last_message_date"])
+    ->where("users.id", "!=", $userId)
+    ->when(!$user->is_admin, function ($query){
+        return $query->whereNull("users.blocked_at");
     })
-    ->orOn(function ($query) {
-        $query->where('conversations.sender_id', '=', Auth::id())
-              ->where('conversations.receiver_id', '=', 'users.id');
-    });
-})
-->leftJoin("messages","messages.id","=","conversations.last_message_id")
-->orderByRaw("IFNULL(users.blocked_at,1)")
-->orderByDesc("messages.created_at")
-->orderByDesc("users.name");
+    ->leftJoin('conversations', function ($join) use ($userId) {
+        $join->on(function ($query) use ($userId) {
+            $query->whereColumn('conversations.sender_id', '=', 'users.id')
+                  ->where('conversations.receiver_id', '=', $userId);
+        })
+        ->orOn(function ($query) use ($userId) {
+            $query->where('conversations.sender_id', '=', $userId)
+                  ->whereColumn('conversations.receiver_id', '=', 'users.id');
+        });
+    })
+    ->leftJoin("messages", "messages.id", "=", "conversations.last_message_id")
+    ->orderByRaw("IFNULL(users.blocked_at,1)")
+    ->orderByDesc("messages.created_at")
+    ->orderByDesc("users.name");
 
-
-return $query->get();
+    return $query->get();
 }
 public function toConversationArray()
     {

@@ -51,5 +51,8 @@ return $query->get();
             'last_message_date' => $this->last_message_date,
         ];
     }
+    public static function updateGroupLastMessage(int $groupId ,Message $message){
+    return self::updateOrCreate(["id"=>$groupId],["last_message_id"=>$message->id]);
+    }
 
 }

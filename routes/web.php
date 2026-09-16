@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
 use App\Models\User;
 use Illuminate\Foundation\Application;
@@ -19,12 +20,9 @@ Route::get('/', function () {
 Route::middleware(["auth"])
 ->group(function (){
 Route::get("/home",[HomeController::class , "home"])->name("dashboard");
-Route::get("/user/{user}",function(){
+Route::get("/user/{user}",[MessageController::class, "byUser"])->name("chat.user");
+Route::get("/group/{group}",[MessageController::class, "byGroup"])->name("chat.group");
 
-})->name("chat.user");
-Route::get("/group/{group}",function(){
-
-})->name("chat.group");
 });
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

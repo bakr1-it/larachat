@@ -30,4 +30,20 @@ return $users->map(function ($user){
 return $group->toConversationArray();
 }));
 }
+public static function updateConversationLastMessage( int $receiverId ,int  $snederId ,Message $message){
+$conversation = Conversation::where(function ($q) use ($receiverId , $snederId){
+    $q->where("sender_id",$snederId)->where("receiver_id",$receiverId);
+    })->orWhere(function ($q) use ($receiverId , $snederId){
+    $q->where("receiver_id",$snederId)->where("sender_id",$receiverId);
+
+})->first();
+if($conversation){
+    $conversation::update(["last_message_id"=>$message->id]);
+}else{
+    Conversation::create(["receiver_id"=>$receiverId , "sender_id",$snederId , "last_message_id"=>$message->id] );
+}
+
+
+
+}
 }
