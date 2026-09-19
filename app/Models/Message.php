@@ -11,7 +11,7 @@ use HasFactory;
 protected $fillable = [
         'body',
         'sender_id',
-        'recevier_id',
+        'receiver_id',
         'conversation_id',
         'group_id',
     ];

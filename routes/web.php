@@ -22,6 +22,7 @@ Route::middleware(["auth"])
 Route::get("/home",[HomeController::class , "home"])->name("dashboard");
 Route::get("/user/{user}",[MessageController::class, "byUser"])->name("chat.user");
 Route::get("/group/{group}",[MessageController::class, "byGroup"])->name("chat.group");
+Route::post("/message",[MessageController::class , "store"])->name("message.store");
 
 });
 Route::middleware('auth')->group(function () {

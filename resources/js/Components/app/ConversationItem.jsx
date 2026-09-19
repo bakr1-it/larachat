@@ -18,13 +18,13 @@ const ConversationItem = ({
             !conversation.is_group &&
             selectedConversation.id === conversation.id
         ) {
-            classes = " border-blue-500 bg-black/20 ";
+            classes = " border-blue-500 bg-slate-900";
         } else if (
             selectedConversation.is_group &&
             conversation.is_group &&
             selectedConversation.id === conversation.id
         ) {
-            classes = " border-blue-500 border-red-500 bg-slate-800 ";
+            classes = " border-blue-500 bg-slate-900 ";
         }
     }
 return (

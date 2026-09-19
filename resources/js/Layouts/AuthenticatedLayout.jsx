@@ -7,9 +7,7 @@ import { useEffect, useState } from 'react';
 
 export default function AuthenticatedLayout({  children }) {
     const user = usePage().props.auth.user;
-useEffect(()=>{
-console.log("AuthenticatedLayout is render");
-},[])
+
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 

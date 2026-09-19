@@ -5,23 +5,23 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
     plugins: [
+        react(),
         laravel({
             input: 'resources/js/app.jsx',
-            refresh: true,
+        refresh: true,
         }),
         tailwindcss(),
-        react(),
     ],
-server: {
-    host: 'localhost',
-    port: 5173,
-    cors: true,
-    hmr: {
+    server: {
         host: 'localhost',
+        port: 5173,
+        cors: true,
+        hmr: {
+            host: 'localhost',
+        },
+        watch: {
+            usePolling: true,
+            interval: 100,
+        },
     },
-    watch: {
-        usePolling: true,
-        interval: 100,
-    },
-},
 });
