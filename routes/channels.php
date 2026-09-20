@@ -1,10 +1,9 @@
 <?php
-
+use App\Http\Resources\userResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Broadcast;
 
-Broadcast::channel('online', function ($user) {
-    return $user;
-});
-Broadcast::channel("message.user.{sender_id}-{receiver_id}",fn(User $user , int $snederId , $receiverId)=> $user->id == $receiverId || $user->id == $snederId ?$user:null);
-Broadcast::channel("group.user.{group_id}",fn(User $user , int $groupId) => $user->groups->contains("id",$groupId) ?$user:null );
+
+Broadcast::channel("message.user.{sender_id}-{receiver_id}",fn(User $user , int $sender_id , int $receiver_id)=> $user->id == $sender_id || $user->id == $receiver_id);
+Broadcast::channel("online",fn(User $user)=> $user ? new userResource($user): null);
+Broadcast::channel("message.group.{group_id}",fn(User $user , int $groupId  )=>  $user->groups->contains("id",$groupId) );

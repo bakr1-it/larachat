@@ -9,7 +9,7 @@ class Conversation extends Model
 {
     protected $fillable = [
         'sender_id',
-        'recevier_id',
+        'receiver_id',
         'last_message_id',
     ];
     public function sender(){

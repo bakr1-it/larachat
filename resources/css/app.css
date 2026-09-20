@@ -1,2 +1,10 @@
 @import "tailwindcss";
 @plugin "daisyui";
+.avatar-online::before{
+border: 1px solid green;
+left: 1px;
+width: 10px;
+height: 10px;
+outline: none;
+
+}

@@ -6,7 +6,7 @@ import { Link, usePage } from "@inertiajs/react";
 const ConversationItem = ({
     conversation,
     selectedConversation = null,
-    online = null,
+    online ,
 }) => {
 
     const page = usePage();

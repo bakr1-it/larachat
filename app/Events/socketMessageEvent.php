@@ -22,6 +22,9 @@ class socketMessageEvent implements ShouldBroadcastNow
     {
         //
     }
+    public function broadcastAs(){
+        return "SocketMessage";
+    }
 
 public function  broadcastWith ():array{
     return
@@ -38,7 +41,7 @@ public function  broadcastWith ():array{
         $m=$this->message;
         $channels=[];
 if($m->group_id){
-$channels[]=new PrivateChannel("group.user." . $m->group_id);
+$channels[]=new PrivateChannel("message.group." . $m->group_id);
 }else{
 $channels[]=new PrivateChannel("message.user.". collect([$m->sender_id , $m->receiver_id])->sort()->implode("-"));
 }

@@ -17,7 +17,7 @@ const ConversationHeader = ({ selectedConversation }) => {
                         </Link>
 
                         {selectedConversation.is_user && (
-                            <UserAvatar user={selectedConversation} />
+                            <UserAvatar user={selectedConversation}   />
                         )}
 
                         {selectedConversation.is_group && (

@@ -6,11 +6,23 @@ import ConversationHeader from '@/Components/App/ConversationHeader';
 import MessageItem from '@/Components/App/MessageItem';
 import MessageInput from '@/Components/App/MessageInput';
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid';
+import { useEvent } from '@/context/EventBus';
 
 function Home({ selectedConversation = null, messages = null }) {
 
     const [localMessages, setLocalMessages] = useState([]);
+    const {on}= useEvent();
     const messagesCtrRef = useRef(null);
+
+function messageCreated(message){
+    if(selectedConversation && selectedConversation.is_group && selectedConversation.id == message.group_id){
+        setLocalMessages((prevMessage)=>[...prevMessage , message]);
+    }else if(selectedConversation && selectedConversation.is_user && (selectedConversation.id == message.sender_id || selectedConversation.id== message.receiver_id)){
+        setLocalMessages((prevMessage)=>[...prevMessage , message]);
+
+    }
+
+}
 
     useEffect(() => {
         setLocalMessages(messages==null ? [] : messages.data.reverse());
@@ -20,8 +32,16 @@ function Home({ selectedConversation = null, messages = null }) {
         if (messagesCtrRef.current) {
             messagesCtrRef.current.scrollTop = messagesCtrRef.current.scrollHeight;
         }
-    }, [localMessages]);
 
+
+
+    }, [localMessages]);
+useEffect(()=>{
+        const offCreated = on("message.created",messageCreated);
+        return ()=>{
+            offCreated();
+        }
+},[on,messageCreated])
     return (
         <>
             <Head title={selectedConversation ? (selectedConversation.name) : "Chat"} />

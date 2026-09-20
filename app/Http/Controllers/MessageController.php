@@ -100,10 +100,10 @@ if($files){
         Group::updateGroupLastMessage($groupId,$message);
 
     }
+    }
+
     socketMessageEvent::dispatch($message);
     return new MessageResource($message);
-}
-
 
     }
     public function destory(Message $message){

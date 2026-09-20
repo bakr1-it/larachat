@@ -15,7 +15,7 @@ const MessageInput = ({ conversation = null }) => {
     const [messageSending, setMessageSending] = useState(false);
     const onSendClick = ()=>{
 
-        console.log("user is send");
+
 
         if(newMessage.trim() == ""){
             setInputErrorMessage("please write message or upload photo or file");
@@ -37,10 +37,10 @@ const MessageInput = ({ conversation = null }) => {
             window.axios.post(route("message.store"),fd,{
                 onUploadProgress : (uep)=>{
                     const progress =uep.loaded / uep.total * 100;
-                    console.log(progress)
+
                 }
             }).then((res)=>{
-                console.log(res);
+         
                 setNewMessage("");
                 setMessageSending(false);
 

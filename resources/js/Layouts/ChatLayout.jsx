@@ -64,6 +64,7 @@ const page = usePage();
                     });
                 })
                 .joining((user) => {
+                    console.log("join");
                     setOnlineUsers((prevOnlineUsers) => {
                         const updatedUsers = { ...prevOnlineUsers };
                         updatedUsers[user.id] = user;
