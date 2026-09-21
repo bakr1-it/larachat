@@ -41,33 +41,33 @@ return Inertia("Home",[
 ]);
 
     }
-    public function loadOlder(Message $message){
-        $messageData=null;
-        if($message->group_id){
-            $messageData=Message::where("created_at", "<" ,$message->created_at)
+public function loadOlder(int $id)
+{
+    $message= Message::findOrFail($id);
+    $messageData =$message->group_id
+     ? Message::where("group_id", "=", $message->group_id)
+            ->where("created_at", "<", $message->created_at)
+            ->latest()
+            ->paginate(10)
+      :
+      Message::where("created_at", "<", $message->created_at)
+            ->where(function ($query) use ($message) {
+                $query->where(function ($q) use ($message) {
+                    $q->where("sender_id", "=", $message->sender_id)
+                      ->where("receiver_id", "=", $message->receiver_id);
+                })->orWhere(function ($q) use ($message) {
+                    $q->where("sender_id", "=", $message->receiver_id)
+                      ->where("receiver_id", "=", $message->sender_id);
+                });
+            })
             ->latest()
             ->paginate(10);
+       ;
 
-        }else{
-             $messageData=Message::where("created_at", "<" ,$message->created_at)
-             ->where(function ($query) use ($message){
-                $query->where("sender_id",$message->sender_id)
-                ->where("receiver_id",$message->receiver_id)
-                ->orwhere("sender_id",$message->receiver_id)
-                ->where("receiver_id",$message->sender_id);
+    return MessageResource::collection($messageData);
+}
 
-
-             })
-                  ->latest()
-                ->paginate(10);
-        }
-
-
-
-
-      return MessageResource::collection($messageData);
-    }
-    public function store(StoreMessageRequest $store){
+public function store(StoreMessageRequest $store){
 $authId= Auth::id();
 $data=$store->validated();
 $data["sender_id"] =$authId;

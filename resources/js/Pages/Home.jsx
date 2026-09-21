@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Head } from '@inertiajs/react';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import ChatLayout from '@/Layouts/ChatLayout';
@@ -13,6 +13,75 @@ function Home({ selectedConversation = null, messages = null }) {
     const [localMessages, setLocalMessages] = useState([]);
     const {on}= useEvent();
     const messagesCtrRef = useRef(null);
+    const loadMoreIntersect = useRef(null);
+    const [scrollFromBottom,setScrollFromBottom]= useState(0);
+    const [noMoreMessages,setNoMoreMessages] = useState(false);
+
+    const loadMessagesMore = useCallback(()=>{
+        const firstMessage= localMessages[0];
+        if(noMoreMessages)return;
+
+        window.axios.get(route("message.loadOlder",firstMessage.id))
+        .then((data)=>{
+            const loadMessages=data.data.data;
+            if(loadMessages.length ==0){
+
+                setNoMoreMessages(true);
+                return;
+            }
+            const scrollHeight= messagesCtrRef.current.scrollHeight;
+            const scrollTop= messagesCtrRef.current.scrollTop;
+            const clientHeight= messagesCtrRef.current.clientHeight;
+            const tempScrollFromBottom = scrollHeight- scrollTop-clientHeight;
+            setScrollFromBottom(tempScrollFromBottom);
+            setLocalMessages((prevMessage)=>[...loadMessages.reverse() , ...prevMessage]);
+
+
+
+        }).catch((error)=>{
+            console.log("error from get data in file home.jsx" );
+            console.log(error);
+        })
+
+
+
+    },[localMessages]);
+
+    useEffect(()=>{
+        if(messagesCtrRef.current && scrollFromBottom !== 0){
+
+            messagesCtrRef.current.scrollTop =
+            messagesCtrRef.current.scrollHeight-
+            messagesCtrRef.current.clientHeight -
+            scrollFromBottom;
+        }
+        if(noMoreMessages)return;
+        if (!messagesCtrRef.current) return;
+        const observer= new IntersectionObserver (
+
+            (enters)=>
+                enters.forEach((enter)=> enter.isIntersecting && loadMessagesMore()
+        ),
+        {
+            root: messagesCtrRef.current,
+            rootMargin : "250px 0px 0px 0px"
+
+        }
+
+
+
+        )
+             if(loadMoreIntersect.current){
+                observer.observe(loadMoreIntersect.current);
+             }
+             return ()=> observer.disconnect()
+
+
+
+
+
+    },[localMessages,noMoreMessages])
+
 
 function messageCreated(message){
     if(selectedConversation && selectedConversation.is_group && selectedConversation.id == message.group_id){
@@ -27,11 +96,18 @@ function messageCreated(message){
     useEffect(() => {
         setLocalMessages(messages==null ? [] : messages.data.reverse());
     }, [messages]);
-
     useEffect(() => {
-        if (messagesCtrRef.current) {
+        if(messagesCtrRef.current && scrollFromBottom==0){
+
             messagesCtrRef.current.scrollTop = messagesCtrRef.current.scrollHeight;
         }
+
+
+
+
+
+
+
 
 
 
@@ -63,7 +139,7 @@ useEffect(()=>{
 
                         <div
                             ref={messagesCtrRef}
-                            className="flex-1 overflow-y-auto p-5"
+                            className="flex-1 overflow-y-auto p-5 messagesCtrRef"
                         >
                                                 {localMessages.length === 0 && (
                                 <div className="flex justify-center items-center h-full">
@@ -75,7 +151,9 @@ useEffect(()=>{
 
 
                             {localMessages.length > 0 && (
-                                <div className="flex-1 flex flex-col gap-2">
+                                <div
+                                className="flex-1 flex flex-col gap-2">
+                                    <div ref={loadMoreIntersect}></div>
                                     {localMessages.map((message) => (
                                         <MessageItem
                                             key={message.id}
