@@ -2,6 +2,7 @@ import UserAvatar from "./UserAvatar";
 import GroupAvatar from "./GroupAvatar";
 import UserOptionsDropdown from "./UserOptionsDropdown";
 import { Link, usePage } from "@inertiajs/react";
+import { formatMessageDate } from "@/helpers";
 
 const ConversationItem = ({
     conversation,
@@ -64,7 +65,7 @@ return (
                     </h3>
                     {conversation.last_message_date && (
                         <span className="text-nowrap text-xs text-gray-400">
-                            {conversation.last_message_date}
+                            {formatMessageDate(conversation.last_message_date,"short")}
                         </span>
                     )}
                 </div>

@@ -14,6 +14,7 @@ const MessageInput = ({ conversation = null }) => {
     const [inputErrorMessage, setInputErrorMessage] = useState("");
     const [messageSending, setMessageSending] = useState(false);
     const onSendClick = ()=>{
+        if(messageSending)return;
 
 
 
@@ -40,7 +41,7 @@ const MessageInput = ({ conversation = null }) => {
 
                 }
             }).then((res)=>{
-         
+
                 setNewMessage("");
                 setMessageSending(false);
 
@@ -93,7 +94,9 @@ const MessageInput = ({ conversation = null }) => {
                         onSend={onSendClick}
                         onChange={(ev) => setNewMessage(ev.target.value)}
                     />
-                    <button onClick={onSendClick} className="btn btn-info rounded-l-none">
+                    <button
+                    disabled={messageSending}
+                    onClick={onSendClick} className="btn btn-info rounded-l-none">
                         {messageSending && (
                             <span className="loading loading-spinner loading-xs"></span>
                         )}

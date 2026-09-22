@@ -46,6 +46,6 @@ return inputDate.getDay() == now.getDay() && inputDate.getMonth() == now.getMont
 function isYestarday(date){
     const now = new Date();
     const inputDate = new Date(date)
-    inputDate.setDate(inputDate.getFullYear()-1);
+    inputDate.setDate(inputDate.getDate()-1);
     return inputDate.getDay() == now.getDay() && inputDate.getMonth() == now.getMonth() && inputDate.getFullYear() == now.getFullYear();
 }

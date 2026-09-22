@@ -38,9 +38,9 @@ $conversation = Conversation::where(function ($q) use ($receiverId , $snederId){
 
 })->first();
 if($conversation){
-    $conversation::update(["last_message_id"=>$message->id]);
+    $conversation->update(["last_message_id"=>$message->id]);
 }else{
-    Conversation::create(["receiver_id"=>$receiverId , "sender_id",$snederId , "last_message_id"=>$message->id] );
+    Conversation::create(["receiver_id"=>$receiverId , "sender_id" => $snederId , "last_message_id"=>$message->id] );
 }
 
 

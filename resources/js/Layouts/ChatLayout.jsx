@@ -4,15 +4,53 @@ import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import TextInput from "@/Components/TextInput";
 import ConversationItem from "@/Components/App/ConversationItem";
 import { usePage } from "@inertiajs/react";
+import { useEvent } from "@/context/EventBus";
 
 const ChatLayout = ({ children }) => {
-const page = usePage();
+    const page = usePage();
     const conversations = page.props.conversations || [];
     const selectedConversation = page.props.selectedConversation;
     const [localConversations, setLocalConversations] = useState([]);
     const [sortedConversations, setSortedConversations] = useState([]);
     const [onlineUsers, setOnlineUsers] = useState({});
 
+    /**
+     * todo update last message
+     *
+     */
+    const {on}= useEvent();
+
+    const messageCreated = (message)=>{
+        setLocalConversations((preLocalConversation)=>{
+             return preLocalConversation.map((conversation)=>{
+                if(message.receiver_id && (conversation.id==message.receiver_id || conversation.id==message.sender_id)){
+                    conversation.last_message=message.body;
+                    conversation.last_message_date= message.created_at;
+                    return conversation;
+
+                }if(message.group_id && conversation.id == message.group_id){
+                    conversation.last_message=message.body;
+                    conversation.last_message_date= message.created_at;
+                    return conversation;
+
+                }
+                return conversation;
+
+            })
+        })
+    }
+
+
+
+    useEffect(()=>{
+        const offCreatedMessages= on("message.created",messageCreated);
+        return ()=>offCreatedMessages();
+    },[on]);
+    /**
+     *
+     * ! end update last message
+     *
+     */
     const isUserOnline = (userId) => !!onlineUsers[userId];
 
     const onSearch = (ev) => {

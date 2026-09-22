@@ -93,13 +93,14 @@ if($files){
 
     }
     $message->attachment = $attachments;
-    if($receiverId){
+
+    }
+        if($receiverId){
         Conversation::updateConversationLastMessage($receiverId ,$authId , $message);
 
     }if($groupId){
         Group::updateGroupLastMessage($groupId,$message);
 
-    }
     }
 
     socketMessageEvent::dispatch($message);
