@@ -73,19 +73,19 @@ $data=$store->validated();
 $data["sender_id"] =$authId;
 $receiverId= $data["receiver_id"]?? null;
 $groupId= $data["group_id"] ?? null;
-$files= $data["attachment"] ?? [];
+$files= $data["attachments"] ?? [];
 $message = Message::create($data);
 $attachments=[];
 if($files){
     foreach($files as $file ){
-        $dir= "attachment / ". Str::random(32);
+        $dir= "attachment/". Str::random(32);
         Storage::makeDirectory($dir);
         $model = [
             "message_id"=>$message->id,
             "name"=>$file->getClientOriginalName(),
             "size"=>$file->getSize(),
             "mime"=>$file->getClientMimeType(),
-            "path"=>$file->sotre($dir ,"public"),
+            "path"=>$file->store($dir ,"public"),
 
         ];
         $attachment=Message_attachment::create($model);

@@ -7,7 +7,7 @@ import MessageItem from '@/Components/App/MessageItem';
 import MessageInput from '@/Components/App/MessageInput';
 import { ChatBubbleLeftRightIcon } from '@heroicons/react/24/solid';
 import { useEvent } from '@/context/EventBus';
-
+import AttachmentPreviewModal from '@/Components/App/AttachmentPreviewModal';
 function Home({ selectedConversation = null, messages = null }) {
 
     const [localMessages, setLocalMessages] = useState([]);
@@ -16,6 +16,8 @@ function Home({ selectedConversation = null, messages = null }) {
     const loadMoreIntersect = useRef(null);
     const [scrollFromBottom,setScrollFromBottom]= useState(0);
     const [noMoreMessages,setNoMoreMessages] = useState(false);
+    const [previewAttachment,setPreviewAttachment] = useState({});
+    const [showAttachmentPreivew,setShowAttachmentPreivew]= useState(false);
 
     const loadMessagesMore = useCallback(()=>{
         const firstMessage= localMessages[0];
@@ -46,6 +48,27 @@ function Home({ selectedConversation = null, messages = null }) {
 
 
     },[localMessages]);
+
+
+    function messageCreated(message){
+        if(selectedConversation && selectedConversation.is_group && selectedConversation.id == message.group_id){
+            setLocalMessages((prevMessage)=>[...prevMessage , message]);
+        }else if(selectedConversation && selectedConversation.is_user && (selectedConversation.id == message.sender_id || selectedConversation.id== message.receiver_id)){
+            setLocalMessages((prevMessage)=>[...prevMessage , message]);
+
+        }
+
+    }
+
+
+const onAttachmentClick =(attachmetns ,ind)=>{
+    setPreviewAttachment({
+        attachmetns,
+        ind,
+    })
+    setShowAttachmentPreivew(true);
+
+}
 
     useEffect(()=>{
         if(messagesCtrRef.current && scrollFromBottom !== 0){
@@ -83,16 +106,6 @@ function Home({ selectedConversation = null, messages = null }) {
     },[localMessages,noMoreMessages])
 
 
-function messageCreated(message){
-    if(selectedConversation && selectedConversation.is_group && selectedConversation.id == message.group_id){
-        setLocalMessages((prevMessage)=>[...prevMessage , message]);
-    }else if(selectedConversation && selectedConversation.is_user && (selectedConversation.id == message.sender_id || selectedConversation.id== message.receiver_id)){
-        setLocalMessages((prevMessage)=>[...prevMessage , message]);
-
-    }
-
-}
-
     useEffect(() => {
         setLocalMessages(messages==null ? [] : messages.data.reverse());
     }, [messages]);
@@ -102,15 +115,6 @@ function messageCreated(message){
             messagesCtrRef.current.scrollTop = messagesCtrRef.current.scrollHeight;
         }
 
-
-
-
-
-
-
-
-
-
     }, [localMessages]);
 useEffect(()=>{
         const offCreated = on("message.created",messageCreated);
@@ -118,7 +122,8 @@ useEffect(()=>{
             offCreated();
         }
 },[on,messageCreated])
-    return (
+
+return (
         <>
             <Head title={selectedConversation ? (selectedConversation.name) : "Chat"} />
 
@@ -156,6 +161,7 @@ useEffect(()=>{
                                     <div ref={loadMoreIntersect}></div>
                                     {localMessages.map((message) => (
                                         <MessageItem
+                                        attachmentClick={onAttachmentClick}
                                             key={message.id}
                                             message={message}
                                         />
@@ -163,10 +169,21 @@ useEffect(()=>{
                                 </div>
                             )}
                         </div>
-                        <MessageInput conversation={selectedConversation} />
+                        <MessageInput conversation={selectedConversation}  />
                     </>
                 )}
             </div>
+            {previewAttachment.attachments && (
+
+
+
+                <AttachmentPreviewModal
+                attachments={[previewAttachment.attachments]}
+                index={previewAttachment.ind}
+                show={showAttachmentPreivew}
+                onClose={()=>setShowAttachmentPreivew(false)}
+                />
+            )}
         </>
     );
 }

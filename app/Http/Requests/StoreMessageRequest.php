@@ -40,8 +40,8 @@ class StoreMessageRequest extends FormRequest
                 Rule::exists("users","id")
 
             ],
-            "attachment"=>["nullable","array","max:10"],
-            "attachment.*"=>["file","max:102400"],
+            "attachments"=>["nullable","array","max:10"],
+            "attachments.*"=>["file","max:102400"],
         ];
     }
 }

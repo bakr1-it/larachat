@@ -23,12 +23,12 @@ const ChatLayout = ({ children }) => {
     const messageCreated = (message)=>{
         setLocalConversations((preLocalConversation)=>{
              return preLocalConversation.map((conversation)=>{
-                if(message.receiver_id && (conversation.id==message.receiver_id || conversation.id==message.sender_id)){
+                if(message.receiver_id && !conversation.is_group && (conversation.id==message.receiver_id || conversation.id==message.sender_id)){
                     conversation.last_message=message.body;
                     conversation.last_message_date= message.created_at;
                     return conversation;
 
-                }if(message.group_id && conversation.id == message.group_id){
+                }if(message.group_id && conversation.is_group && conversation.id == message.group_id){
                     conversation.last_message=message.body;
                     conversation.last_message_date= message.created_at;
                     return conversation;
