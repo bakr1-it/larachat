@@ -12,15 +12,14 @@ import {isAudio ,isImg , isPdf , formatBytes , isPreviewble , isVideo} from "@/h
 
 export default function AttachmentPreviewModal({attachments , index, show , onClose = ()=>{}}) {
 const [currentIndex, setCurrentIndex]= useState(0);
-const attachment = useMemo(()=>{
-return attachments[currentIndex]
-},[attachments , currentIndex])
+
 const previewableAttachments = useMemo(()=>{
-return attachments.filter((attachment)=>isPreviewble(attachment) )
+    return attachments.filter((attachment)=>isPreviewble(attachment) && !isAudio(attachment)  )
 },[attachments])
-useEffect(()=>{
-console.log("start file");
-},[])
+
+const attachment = useMemo(()=>{
+return previewableAttachments[currentIndex]
+},[previewableAttachments , currentIndex])
 const close  = ()=>{
     onClose();
 }
@@ -35,7 +34,11 @@ const next= ()=>{
 useEffect(()=>{
 setCurrentIndex(index);
 },[index])
+if (!attachment || previewableAttachments.length === 0) {
+    return null;
+}
     return (
+
   <Transition show={show} as={Fragment} leave="duration-200">
         <Dialog
             as="div"

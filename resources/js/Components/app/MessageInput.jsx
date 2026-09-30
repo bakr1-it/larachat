@@ -13,10 +13,14 @@ import EmojiPicker from "emoji-picker-react";
 import { isAudio, isImg, } from "@/helpers";
 import CustomPreviewAttachment from "./CustomPreviewAttachment";
 import CustomAudioPlayer from "./CustomAudioPlayer";
+import AudioRecoreder from "./AudioRecoreder";
 import { v4 as uuidV4 } from "uuid";
+
 const MessageInput = ({ conversation = null }) => {
 
+
     const [newMessage, setNewMessage] = useState("");
+
     const [inputErrorMessage, setInputErrorMessage] = useState("");
     const [messageSending, setMessageSending] = useState(false);
     const [uploadProgressBar,setUploadProgressBar] = useState(0);
@@ -42,13 +46,24 @@ setChosenFile((prevFile)=>{
 })
 }
 
-useEffect(()=>{
-console.log(chosenFile)
-},[chosenFile])
+
 /**
  * ! end create function and use state for attachment
  */
+/**
+ * todo
+ * function for append file audio in chose file
+ */
 
+const recordedAudioReady = (file,url)=>{
+    setChosenFile((prev)=>[...prev , { id:uuidV4() , file, url}]);
+}
+
+
+/**
+ * !
+ * end function for append file audio in chose file
+ */
 
     /**
      *
@@ -62,7 +77,7 @@ console.log(chosenFile)
     const onLikeClick = ()=>{
         if(messageSending)return;
         const data={
-        message:"👍"
+        body:"👍"
         }
           if(conversation.is_user){
               data["receiver_id"]=conversation.id;
@@ -73,6 +88,8 @@ console.log(chosenFile)
 
     }
     const onSendClick = ()=>{
+
+
         if(messageSending)return;
 
 
@@ -151,6 +168,9 @@ console.log(chosenFile)
                         className="absolute left-0 top-0 right-0 bottom-0 z-20 opacity-0 cursor-pointer"
                     />
                 </button>
+                <button className="p-1 text-gray-400 hover:text-gray-300 relative ">
+                                <AudioRecoreder fileReady={recordedAudioReady} />
+                </button>
             </div>
 
 
@@ -203,6 +223,7 @@ console.log(chosenFile)
                 })}
 
             </div>
+
 
             <div className="order-3 xs:order-3 p-2 flex">
                 <Popover className="relative">

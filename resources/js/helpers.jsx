@@ -55,7 +55,9 @@ const isImg = (attachment)=>{
     return mime.split("/")[0].toLowerCase() === "image";
 }
 const isAudio = (attachment)=>{
-    return (attachment.type || attachment?.mime).toLowerCase() === "application/ogg"
+    let mime= attachment.mime || attachment.type;
+    mime = String(mime).toLocaleLowerCase();
+  return mime.startsWith("audio/") || mime === "application/ogg";
 }
 const isVideo = (attachment)=>{
     let mime= attachment.type || attachment?.mime ;

@@ -1,3 +1,4 @@
+import Toast from '@/Components/App/Toast';
 import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
@@ -56,6 +57,7 @@ return () =>{
 },[conversations])
 
     return (
+  <>
         <div className="h-screen flex flex-col bg-gray-100 dark:bg-gray-900 overflow-hidden">
     <nav className="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -211,5 +213,7 @@ return () =>{
 
             <main className='flex-1 flex flex-col overflow-hidden'>{children}</main>
         </div>
+        <Toast />
+  </>
     );
 }

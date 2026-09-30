@@ -12,6 +12,7 @@ import {
         formatBytes,
         isPreviewble,}
          from "@/helpers"
+import CustomAudioPlayer from "./CustomAudioPlayer"
 
 export default function MessageAttachment({attachments ,attachmentClick}) {
   return (
@@ -20,7 +21,10 @@ export default function MessageAttachment({attachments ,attachmentClick}) {
     <div className="mt-2 flex flex-wrap justify-end gap-1">
         {attachments.map((attachment , ind)=>{
             return <div
-            onClick={()=>attachmentClick(attachment,ind)}
+     onClick={() => {
+    if (isAudio(attachment)) return;
+    attachmentClick(attachment, ind);
+}}
             key={attachment.id}
             className={`
                 group flex flex-col justify-center items-center text-gray-500 relative cursor-pointer
@@ -39,7 +43,7 @@ export default function MessageAttachment({attachments ,attachmentClick}) {
          absolute right-0 top-0 cursor-pointer hover:bg-gray-800"
     >
         <ArrowDownCircleIcon className="w-4 h-4" />
-            
+
 
     </a>
 )}
@@ -58,12 +62,7 @@ export default function MessageAttachment({attachments ,attachmentClick}) {
     </div>
 )}
 {isAudio(attachment) && (
-    <div className="relative flex justify-center items-center">
-        <audio
-            src={attachment.url}
-            controls
-        ></audio>
-    </div>
+       <CustomAudioPlayer file={attachment} showVolume={false} />
 )}
 {isPdf(attachment) && (
     <div className="relative flex justify-center items-center">

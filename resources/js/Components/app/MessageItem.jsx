@@ -42,8 +42,8 @@ const MessageItem = ({ message ,attachmentClick}) => {
                     </div>
                 </div>
                     <MessageAttachment
-                    attachments={message.attachments}
-                    attachmentClick={attachmentClick}
+                            attachments={message.attachments}
+    attachmentClick={(attachment, ind) => attachmentClick(message.attachments, ind)}
                     />
             </div>
         </div>

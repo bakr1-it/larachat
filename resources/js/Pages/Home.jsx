@@ -61,9 +61,9 @@ function Home({ selectedConversation = null, messages = null }) {
     }
 
 
-const onAttachmentClick =(attachmetns ,ind)=>{
+const onAttachmentClick =(attachments ,ind)=>{
     setPreviewAttachment({
-        attachmetns,
+        attachments,
         ind,
     })
     setShowAttachmentPreivew(true);
@@ -161,7 +161,7 @@ return (
                                     <div ref={loadMoreIntersect}></div>
                                     {localMessages.map((message) => (
                                         <MessageItem
-                                        attachmentClick={onAttachmentClick}
+                                           attachmentClick={onAttachmentClick}
                                             key={message.id}
                                             message={message}
                                         />
@@ -176,12 +176,11 @@ return (
             {previewAttachment.attachments && (
 
 
-
                 <AttachmentPreviewModal
-                attachments={[previewAttachment.attachments]}
-                index={previewAttachment.ind}
-                show={showAttachmentPreivew}
-                onClose={()=>setShowAttachmentPreivew(false)}
+      attachments={previewAttachment.attachments}
+        index={previewAttachment.ind}
+        show={showAttachmentPreivew}
+        onClose={() => setShowAttachmentPreivew(false)}
                 />
             )}
         </>

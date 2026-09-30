@@ -49,6 +49,7 @@ const handleSeekChange = (e) => {
 <div className="flex w-full items-center py-2 px-3 gap-2 rounded-md bg-slate-800">
     <audio
     src={file.url}
+    ref={audioRef}
     controls
     onLoadedMetadata={handleLoadedMetadata}
     onTimeUpdate={handelUpdateTime}
