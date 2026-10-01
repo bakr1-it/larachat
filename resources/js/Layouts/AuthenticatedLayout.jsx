@@ -6,6 +6,8 @@ import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { useEvent } from '@/context/EventBus';
 import { Link, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
+import NewMessageNotifcation from "@/Components/App/NewMessageNotifcation"
+
 
 export default function AuthenticatedLayout({  children }) {
     const user = usePage().props.auth.user;
@@ -34,9 +36,15 @@ conversations.forEach(conversation => {
             user:message.sender,
             group_id : message.group_id,
             content:
-            message.body || message.attachments.length === 1 ? "an attachemnt":message.attachments.length + "attachemnt"
+            message.body && message.body.trim() !==''
+            ?message.body
+            :message.attachments.length ===1
+            ?" an attachment "
+            :message.attachments.length + " attachment"
+
 
         })
+
 
 
     })
@@ -214,6 +222,8 @@ return () =>{
             <main className='flex-1 flex flex-col overflow-hidden'>{children}</main>
         </div>
         <Toast />
+        < NewMessageNotifcation/>
+
   </>
     );
 }
