@@ -4,6 +4,7 @@ import React from "react";
 import UserAvatar from "./UserAvatar";
 import { formatMessageDate } from "@/helpers";
 import MessageAttachment from "./MessageAttachment";
+import MessageOptionDropDown from "./MessageOptionDropDown";
 
 const MessageItem = ({ message ,attachmentClick}) => {
     const currentUser = usePage().props.auth.user;
@@ -30,12 +31,13 @@ const MessageItem = ({ message ,attachmentClick}) => {
 
             <div
                 className={
-                    "chat-bubble relative " +
+                    "chat-bubble flex" +
                     (message.sender_id === currentUser.id
                         ? " chat-bubble-info"
                         : "")
                 }
             >
+                {message.sender_id == currentUser.id && (<MessageOptionDropDown  message={message} />)}
                 <div className="chat-message">
                     <div className="chat-message-content">
                     <ReactMarkdown>{message.body}</ReactMarkdown>

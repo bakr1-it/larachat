@@ -10,11 +10,10 @@ use App\Models\Group;
 use App\Models\Message;
 use App\Models\Message_attachment;
 use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Inertia\Inertia;
+
 
 
 class MessageController extends Controller
@@ -107,8 +106,10 @@ if($files){
     return new MessageResource($message);
 
     }
-    public function destory(Message $message){
-        if($message->sneder_id !== Auth::id()){
+    public function destory(string $id){
+        $message = Message::findOrFail($id);
+
+        if($message->sender_id !== Auth::id()){
             return response()->json(["error"=>"forbidden"],403);
         }
         $message->delete();

@@ -12,7 +12,7 @@ on("newMessageNotification",({content, user , group_id})=>{
     const id=uuidv4();
     setToasts((prev) => [...prev , {content , id , group_id , user} ]);
     setTimeout(() => {
- ((prev)=> prev.filter((toast)=> toast.id !== id));
+ ((prev)=> prev.filter((toast)=> toast.id == id));
     }, 5000);
 
 })

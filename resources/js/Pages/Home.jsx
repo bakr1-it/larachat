@@ -19,6 +19,8 @@ function Home({ selectedConversation = null, messages = null }) {
     const [previewAttachment,setPreviewAttachment] = useState({});
     const [showAttachmentPreivew,setShowAttachmentPreivew]= useState(false);
 
+
+
     const loadMessagesMore = useCallback(()=>{
         const firstMessage= localMessages[0];
         if(noMoreMessages)return;
@@ -49,7 +51,10 @@ function Home({ selectedConversation = null, messages = null }) {
 
     },[localMessages]);
 
-
+/**
+ *todo message created and deleted event use on and use effect
+ *
+ *  */
     function messageCreated(message){
         if(selectedConversation && selectedConversation.is_group && selectedConversation.id == message.group_id){
             setLocalMessages((prevMessage)=>[...prevMessage , message]);
@@ -59,6 +64,27 @@ function Home({ selectedConversation = null, messages = null }) {
         }
 
     }
+    function messaegDeleted (message){
+                if(selectedConversation && selectedConversation.is_group && selectedConversation.id == message.group_id){
+            setLocalMessages((prevMessage)=>{
+                return prevMessage.filter(message=> message.id !== id);
+            });
+        }else if(selectedConversation && selectedConversation.is_user && (selectedConversation.id == message.sender_id || selectedConversation.id== message.receiver_id)){
+            setLocalMessages((prevMessage)=>{
+                return prevMessage.filter(m=> m.id !== message.id);
+            });
+
+        }
+
+    }
+useEffect(()=>{
+        const offCreated = on("message.created",messageCreated);
+        const offDeleted=on("message.deleted",messaegDeleted);
+        return ()=>{
+            offCreated();
+            offDeleted();
+        }
+},[on,messageCreated])
 
 
 const onAttachmentClick =(attachments ,ind)=>{
@@ -116,12 +142,6 @@ const onAttachmentClick =(attachments ,ind)=>{
         }
 
     }, [localMessages]);
-useEffect(()=>{
-        const offCreated = on("message.created",messageCreated);
-        return ()=>{
-            offCreated();
-        }
-},[on,messageCreated])
 
 return (
         <>

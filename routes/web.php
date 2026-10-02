@@ -23,6 +23,7 @@ Route::get("/home",[HomeController::class , "home"])->name("dashboard");
 Route::get("/user/{user}",[MessageController::class, "byUser"])->name("chat.user");
 Route::get("/group/{group}",[MessageController::class, "byGroup"])->name("chat.group");
 Route::post("/message",[MessageController::class , "store"])->name("message.store");
+Route::delete("/message/{id}",[MessageController::class ,"destory"])->name("message.destory");
 Route::get("/loadMoreMessage/{id}",[MessageController::class, "loadOlder"])->name("message.loadOlder");
 
 });
