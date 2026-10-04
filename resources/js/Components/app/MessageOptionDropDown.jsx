@@ -12,9 +12,9 @@ const {emit} = useEvent()
     if(!message) return ;
     axios.delete(route("message.destory",message.id))
     .then((data)=>{
-        emit("message.deleted",message);
+        emit("message.deleted",{ message:message, prevMessage : data.data.prevMessage});
 
-        console.log(data)}
+        }
     )
     .catch((error)=>{console.log(error)})
 
@@ -28,7 +28,7 @@ const {emit} = useEvent()
             e.preventDefault()
 
         }}
-        className="top-1/2 absolute right-full text-gray-200 -translate-y-1/2 "
+        className="top-1/2 absolute right-full text-gray-200 -translate-y-1/2 z-50"
         >
             <Menu as="div" className="relative inline-block text-left left-0">
                 <div>

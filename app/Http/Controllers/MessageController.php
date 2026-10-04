@@ -109,11 +109,44 @@ if($files){
     public function destory(string $id){
         $message = Message::findOrFail($id);
 
+        $prevMessage= null;
+        $group=null;
+        $conversation= null;
+
         if($message->sender_id !== Auth::id()){
             return response()->json(["error"=>"forbidden"],403);
         }
+        if($message->group_id){
+            $group = Group::where("last_message_id",$message->id)->first();
+
+
+            }else{
+
+$conversation = Conversation::where(function ($q) use ($message) {
+        $q->where('sender_id', $message->sender_id)
+          ->where('receiver_id', $message->receiver_id);
+    })->orWhere(function ($q) use ($message) {
+        $q->where('sender_id', $message->receiver_id)
+          ->where('receiver_id', $message->sender_id);
+    })->first();
+
+
+
+        }
+
+
+
+
         $message->delete();
-        return response()->json(["message"=>"delete success"],204);
+        if($message->group_id) {
+$group->refresh();
+$prevMessage = $group->lastMessage ? new MessageResource($group->lastMessage): null;
+}else{
+$conversation->refresh();
+    $prevMessage = $conversation->lastMessage ? new MessageResource($conversation->lastMessage): null;
+        }
+
+        return response()->json(["message"=>"delete success","prevMessage"=> $prevMessage]);
     }
 }
 

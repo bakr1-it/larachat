@@ -39,12 +39,20 @@ const ChatLayout = ({ children }) => {
             })
         })
     }
+    function messageUpdated( {prevMessage}){
+if(!prevMessage)return;
+messageCreated(prevMessage);
 
+    }
 
 
     useEffect(()=>{
         const offCreatedMessages= on("message.created",messageCreated);
-        return ()=>offCreatedMessages();
+        const offUpdateedLastMessage= on("message.deleted",messageUpdated)
+        return ()=>{
+            offCreatedMessages();
+            offUpdateedLastMessage();
+        }
     },[on]);
     /**
      *

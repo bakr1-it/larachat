@@ -27,7 +27,7 @@ public function receiver(){
 public function group(){
     return $this->belongsTo(Group::class);
 }
-public function attachment(){
+public function attachments(){
     return $this->hasMany(Message_attachment::class);
 }
 
