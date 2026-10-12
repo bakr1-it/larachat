@@ -49,6 +49,17 @@ conversations.forEach(conversation => {
 
     })
     .error((error)=>{console.log(error)})
+    if(conversation.is_group){
+        Echo.private(`group.delete.${conversation.id}`)
+        .listen(".group.delete", (e)=>{
+        
+            console.log(  "listen to echo private in channel group detete");
+            console.log(e);
+            emit("group.delete" ,{id:e.id , name:e.name});
+
+        }).error((e)=>{console.log("this error for echo private " ,e )});
+    }
+
 
 });
 return () =>{
@@ -58,6 +69,10 @@ return () =>{
         channel= `message.user.${[parseInt(user.id) ,parseInt( conversation.id)].sort((a,b)=>a-b).join("-")}`;
     }
     Echo.leave(channel)
+    if(conversation.is_group){
+        Echo.leave(`group.delete.${conversation.id}`)
+
+    }
 
     });
 }

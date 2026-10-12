@@ -28,7 +28,7 @@ const {emit} = useEvent()
             e.preventDefault()
 
         }}
-        className="top-1/2 absolute right-full text-gray-200 -translate-y-1/2 z-50"
+        className="top-1/2 absolute right-full text-gray-200 -translate-y-1/2 z-30"
         >
             <Menu as="div" className="relative inline-block text-left left-0">
                 <div>

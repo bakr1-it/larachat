@@ -19,7 +19,7 @@ class GroupFactory extends Factory
     {
         return [
             "name"=>$this->faker->name,
-            "descrition"=>$this->faker->text,
+            "description"=>$this->faker->text,
         ];
     }
 }

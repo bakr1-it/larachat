@@ -10,7 +10,7 @@ class Group extends Model
     use HasFactory;
     protected $fillable = [
         'name',
-        'descrition',
+        'description',
         'owner_id',
         'last_message_id',
     ];
@@ -43,7 +43,7 @@ return $query->get();
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'description' => $this->description,
+            'description' => $this->descrition,
             'is_group' => true,
             'is_user' => false,
             'owner_id' => $this->owner_id,

@@ -10,7 +10,7 @@ on("toast.show",(message)=>{
     const id=uuidv4();
     setToasts((prev) => [...prev , {message , id}]);
     setTimeout(() => {
- ((prev)=> prev.filter((toast)=> toast.id !== id));
+setToasts((prev)=> prev.filter((toast)=> toast.id !== id));
     }, 3000);
 
 })

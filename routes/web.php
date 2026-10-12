@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
@@ -23,8 +24,19 @@ Route::get("/home",[HomeController::class , "home"])->name("dashboard");
 Route::get("/user/{user}",[MessageController::class, "byUser"])->name("chat.user");
 Route::get("/group/{group}",[MessageController::class, "byGroup"])->name("chat.group");
 Route::post("/message",[MessageController::class , "store"])->name("message.store");
-Route::delete("/message/{id}",[MessageController::class ,"destory"])->name("message.destory");
+Route::delete("/message/{id}",[MessageController::class ,"destroy"])->name("message.destory");
 Route::get("/loadMoreMessage/{id}",[MessageController::class, "loadOlder"])->name("message.loadOlder");
+/**
+ * todo route for group
+ *
+ */
+Route::post("group",[GroupController::class, "store"])->name("group.store");
+Route::put("group/{group}",[GroupController::class,"update"])->name("group.update");
+Route::delete("group/{group}",[GroupController::class , "destroy"])->name("group.destory");
+
+/**
+ * ! end for all route for group
+ */
 
 });
 Route::middleware('auth')->group(function () {
