@@ -12,20 +12,22 @@ export default function UpdateProfileInformation({
 }) {
     const user = usePage().props.auth.user;
 
-    const { data, setData, patch, errors, processing, recentlySuccessful } =
+    const { data, setData, post, errors, processing, recentlySuccessful } =
         useForm({
             name: user.name,
             email: user.email,
+            avatar:null,
+            _method : "PATCH"
         });
 
     const submit = (e) => {
         e.preventDefault();
 
-        patch(route('profile.update'));
+        post(route('profile.update'));
     };
 
     return (
-        <section className={className}>
+        <section className={`${className}`}>
             <header>
                 <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">
                     Profile Information
@@ -37,6 +39,17 @@ export default function UpdateProfileInformation({
             </header>
 
             <form onSubmit={submit} className="mt-6 space-y-6">
+                <div>
+                    <InputLabel htmlFor="Avatar" value="Avatar" />
+                    <input type="file"
+                     className="file-input file-input-md bg-gray-900 w-full"
+                     name="avatar"
+                
+                     onChange={(e)=>setData("avatar",e.target.files[0])}
+
+                     />
+                    <InputError className="mt-2" message={errors.avatar} />
+                </div>
                 <div>
                     <InputLabel htmlFor="name" value="Name" />
 

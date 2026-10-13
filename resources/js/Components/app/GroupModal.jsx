@@ -25,7 +25,7 @@ export default function GroupModal({ show = false, onClose = () => {} }) {
         user_ids: [],
     });
 
-    // جلب المستخدمين الذين ليسوا مجموعات
+
     const users = conversations.filter((c) => !c.is_group);
 
     const groupUpdateOrCreate = (e) => {
@@ -70,8 +70,8 @@ export default function GroupModal({ show = false, onClose = () => {} }) {
     }, [on]);
 
     return (
-        <Modal show={show} onClose={onCloseModal}>
-            <form onSubmit={groupUpdateOrCreate} className="p-6 overflow-y-auto">
+        <Modal show={show} onClose={onCloseModal} >
+            <form onSubmit={groupUpdateOrCreate} className="p-6 overflow-y-auto m-auto ">
                 <h2 className="text-xl font-medium text-gray-900 dark:text-gray-100">
                     {group.id
                         ? `Edit Group "${group.name}"`

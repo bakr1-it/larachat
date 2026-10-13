@@ -17,7 +17,7 @@ const ConversationHeader = ({ selectedConversation }) => {
         }
         axios.delete(route("group.destory",selectedConversation.id))
         .then((res)=>{
-        
+
             emit("toast.show" , res.data.message);
         }).catch((error)=>{console.log(error)});
     }
@@ -59,7 +59,7 @@ const ConversationHeader = ({ selectedConversation }) => {
                                 <>
                                 <div className="tooltip tooltip-left" data-tip="Edit group">
                                     <button onClick={()=> emit("GroupModal.show",selectedConversation)} className="text-gray-400 hover:text-gray-200">
-                                        <PencilSquareIcon  className="w-4"/>
+                                        <PencilSquareIcon  className="w-4" />
 
                                     </button>
 

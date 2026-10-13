@@ -7,12 +7,16 @@ import { useEvent } from '@/context/EventBus';
 import { Link, usePage } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import NewMessageNotifcation from "@/Components/App/NewMessageNotifcation"
+import PrimaryButton from '@/Components/PrimaryButton';
+import { UserPlusIcon } from '@heroicons/react/24/solid';
+import UserModal from "@/Components/App/UserModal"
 
 
 export default function AuthenticatedLayout({  children }) {
     const user = usePage().props.auth.user;
     const {emit} = useEvent();
     const conversations= usePage().props.conversations;
+    const [showModalUser,setShowModalUser]= useState();
 
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
@@ -52,7 +56,7 @@ conversations.forEach(conversation => {
     if(conversation.is_group){
         Echo.private(`group.delete.${conversation.id}`)
         .listen(".group.delete", (e)=>{
-        
+
             console.log(  "listen to echo private in channel group detete");
             console.log(e);
             emit("group.delete" ,{id:e.id , name:e.name});
@@ -103,7 +107,14 @@ return () =>{
                         </div>
 
                         <div className="hidden sm:ms-6 sm:flex sm:items-center">
-                            <div className="relative ms-3">
+                            <div className="relative ms-3 flex gap-2">
+                            {user.is_admin && (
+                                <button onClick={()=>setShowModalUser(true)}>
+                                    <PrimaryButton >
+                                        <UserPlusIcon  className='w-5 h-5'/> Create New User
+                                    </PrimaryButton>
+                                </button>
+                            )}
                                 <Dropdown>
                                     <Dropdown.Trigger>
                                         <span className="inline-flex rounded-md">
@@ -238,6 +249,7 @@ return () =>{
         </div>
         <Toast />
         < NewMessageNotifcation/>
+        < UserModal show={showModalUser} onClose={()=>setShowModalUser(false)}/>
 
   </>
     );

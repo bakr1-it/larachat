@@ -4,6 +4,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,10 @@ Route::get("/loadMoreMessage/{id}",[MessageController::class, "loadOlder"])->nam
 Route::post("group",[GroupController::class, "store"])->name("group.store");
 Route::put("group/{group}",[GroupController::class,"update"])->name("group.update");
 Route::delete("group/{group}",[GroupController::class , "destroy"])->name("group.destory");
+Route::middleware(["admin"])->group(function(){
+Route::post("user/create",[UserController::class,"store"])->name("user.store");
+
+});
 
 /**
  * ! end for all route for group

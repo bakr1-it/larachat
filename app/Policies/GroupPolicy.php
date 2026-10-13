@@ -46,7 +46,7 @@ class GroupPolicy
     public function delete(User $user, Group $group): bool
     {
 
-        return $group->users->contains($user);
+        return $group->owner_id == $user->id;
 
     }
 
@@ -54,7 +54,7 @@ class GroupPolicy
      * Determine whether the user can restore the model.
      */
     public function restore(User $user, Group $group): bool
-    {
+{
         return false;
     }
 
