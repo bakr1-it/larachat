@@ -8,19 +8,24 @@ import {
     UserIcon,
 } from "@heroicons/react/24/solid";
 import axios from "axios";
+import { useEvent } from "@/context/EventBus";
 
 export default function UserOptionsDropdown({ conversation }) {
+    const {emit} = useEvent();
     const changeUserRole = (ev) => {
                 console.log("Change user role");
         if (!conversation.is_user) {
             return;
         }
 
-        // Send axios post request to change user role and show notification on success
+
         axios
             .post(route("user.changeRole", conversation.id))
-            .then((res) => {
-                console.log(res.data);
+.then((res) => {
+    if(res.data.message){
+        emit("toast.show",`user change role is success ${conversation.name}`)
+
+    }
             })
             .catch((err) => {
                 console.error(err);
@@ -28,16 +33,23 @@ export default function UserOptionsDropdown({ conversation }) {
     };
 
     const onBlockUser = () => {
-        console.log("Block user");
-        if (!conversation.is_user) {
-            return;
-        }
 
-        // Send axios post request to block user and show notification on success
+            if(!conversation.is_user){
+                return;
+                }
+
         axios
             .post(route("user.blockUnblock", conversation.id))
             .then((res) => {
-                console.log(res.data);
+                console.log(res.data.message);
+                console.log(res.message);
+                console.log("res.message");
+                console.log(res.data.message);
+                if(res.data.message){
+        emit("toast.show",`${res.data.message} success ${conversation.name}`)
+
+    }
+
             })
             .catch((err) => {
                 console.error(err);

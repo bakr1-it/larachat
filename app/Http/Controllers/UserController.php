@@ -33,5 +33,27 @@ $user= User::create($data);
 return  redirect()->back();
 
     }
+    public function blockUnblock(string $id){
+        $user= User::findorFail($id);
+
+$message=null;
+    if($user->blocked_at != null){
+        $user->blocked_at=null;
+        $message="This Acounnt is Unblock";
+
+        }else{
+            $user->blocked_at=now();
+            $message="This Acounnt is block";
+    }
+    $user->save();
+    return response()->json(["message"=>$message]);
+
+    }
+    public function changeRoleUser(User $user){
+        $user->is_admin = !$user->is_admin;
+        $user->save();
+        return response()->json(["message"=>"user chagne role is success"]);
+
+    }
 
 }

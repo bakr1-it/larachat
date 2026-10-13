@@ -36,6 +36,7 @@ Route::put("group/{group}",[GroupController::class,"update"])->name("group.updat
 Route::delete("group/{group}",[GroupController::class , "destroy"])->name("group.destory");
 Route::middleware(["admin"])->group(function(){
 Route::post("user/create",[UserController::class,"store"])->name("user.store");
+Route::post("user/block/{id}",[UserController::class,"blockUnblock"])->name("user.blockUnblock");
 
 });
 
