@@ -49,11 +49,16 @@ $message=null;
     return response()->json(["message"=>$message]);
 
     }
-    public function changeRoleUser(User $user){
-        $user->is_admin = !$user->is_admin;
+    public function changeRoleUser(string $id){
+
+        $user= User::findorFail($id);
+
+
+        $is_admin=$user->is_admin ?"Ruglar user":"admin";
+        $user->is_admin = !($user->is_admin);
         $user->save();
-        return response()->json(["message"=>"user chagne role is success"]);
+        return response()->json(["message"=>" change role name user is {$user->name} to {$is_admin}"]);
 
     }
-
 }
+

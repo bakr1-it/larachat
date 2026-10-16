@@ -13,7 +13,7 @@ import { useEvent } from "@/context/EventBus";
 export default function UserOptionsDropdown({ conversation }) {
     const {emit} = useEvent();
     const changeUserRole = (ev) => {
-                console.log("Change user role");
+
         if (!conversation.is_user) {
             return;
         }
@@ -23,7 +23,8 @@ export default function UserOptionsDropdown({ conversation }) {
             .post(route("user.changeRole", conversation.id))
 .then((res) => {
     if(res.data.message){
-        emit("toast.show",`user change role is success ${conversation.name}`)
+        console.log("user to change role to admin or ruglar");
+        emit("toast.show",`${res.data.message}`)
 
     }
             })

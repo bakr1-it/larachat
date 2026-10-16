@@ -19,9 +19,10 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
         $middleware->alias([
             "admin"=>\App\Http\Middleware\AdminUserMiddleware::class,
+            "active"=>\App\Http\Middleware\ActiveUser::class,
         ]);
 
-        
+
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->shouldRenderJsonWhen(

@@ -19,7 +19,7 @@ Route::get('/', function () {
     ]);
 });
 
-Route::middleware(["auth"])
+Route::middleware(["auth","active"])
 ->group(function (){
 Route::get("/home",[HomeController::class , "home"])->name("dashboard");
 Route::get("/user/{user}",[MessageController::class, "byUser"])->name("chat.user");
@@ -37,6 +37,7 @@ Route::delete("group/{group}",[GroupController::class , "destroy"])->name("group
 Route::middleware(["admin"])->group(function(){
 Route::post("user/create",[UserController::class,"store"])->name("user.store");
 Route::post("user/block/{id}",[UserController::class,"blockUnblock"])->name("user.blockUnblock");
+Route::post("user/changeRole/{id}",[UserController::class,"changeRoleUser"])->name("user.changeRole");
 
 });
 
