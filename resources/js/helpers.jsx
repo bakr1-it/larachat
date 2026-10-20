@@ -89,4 +89,20 @@ while(byte >= k ){
 }
 return parseFloat(size.toFixed(dm)) + ' '+ sizes[i];
 }
-export {isAudio ,isImg , isPdf , formatBytes , isPreviewble , isVideo}
+ function showTimeForAudioOrVido(totalSeconds) {
+if(!totalSeconds  || isNaN(totalSeconds) || totalSeconds < 0){
+    return "00:00";
+}
+const hours= Math.floor(totalSeconds / 3600);
+const minute= Math.floor((totalSeconds % 3600) / 60);
+const second = Math.floor(totalSeconds % 60);
+const formatForMinute= String(minute).padStart(2,'0');
+const formatForSecond= String(second).padStart(2,'0');
+if(hours > 0){
+    const formatForHours= String(hours).padStart(2,'0');
+    return `${formatForHours}:${formatForMinute}:${formatForSecond}`
+}
+return `${formatForMinute}:${formatForSecond}`
+
+}
+export {isAudio ,isImg , isPdf , formatBytes , isPreviewble , isVideo ,showTimeForAudioOrVido}

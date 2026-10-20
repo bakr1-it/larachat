@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\UserBlockUnblockMail;
+use App\Mail\UserChangeRoleMail;
+use App\Mail\UserCreateMail;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -26,10 +31,12 @@ $data= $request->validate([
         "boolean"
     ]
 ]);
-$data["password"] = "12345678";
+$password = Str::random(8);
+$data["password"] =$password;
 $data["email_verified_at"]=now();
 
 $user= User::create($data);
+Mail::to($user)->queue(new UserCreateMail($user, $password));
 return  redirect()->back();
 
     }
@@ -45,7 +52,9 @@ $message=null;
             $user->blocked_at=now();
             $message="This Acounnt is block";
     }
-    $user->save();
+     $user->save();
+
+    Mail::to($user)->queue(new UserBlockUnblockMail($user));
     return response()->json(["message"=>$message]);
 
     }
@@ -57,6 +66,7 @@ $message=null;
         $is_admin=$user->is_admin ?"Ruglar user":"admin";
         $user->is_admin = !($user->is_admin);
         $user->save();
+    Mail::to($user)->queue(new UserChangeRoleMail($user));
         return response()->json(["message"=>" change role name user is {$user->name} to {$is_admin}"]);
 
     }

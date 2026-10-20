@@ -1,6 +1,7 @@
 
 import { PauseCircleIcon, PlayCircleIcon } from "@heroicons/react/24/solid";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+import { showTimeForAudioOrVido } from "@/helpers";
 
 const CustomAudioPlayer = ({ file, showVolume = true }) => {
     const audioRef = useRef();
@@ -14,12 +15,15 @@ const CustomAudioPlayer = ({ file, showVolume = true }) => {
         if(isPlaying){
             audio.pause();
 
+
         }else{
             setDuration(audio.duration);
+
+
             audio.play();
 
         }
-        setIsPlaying(!isPlaying);
+        setIsPlaying((prev)=>!prev);
 
     };
     const handelChangeVolumn =(e)=>{
@@ -30,8 +34,8 @@ const CustomAudioPlayer = ({ file, showVolume = true }) => {
     }
     const handelUpdateTime = (e)=>{
         const audio= audioRef.current;
-        setDuration(audio.duration);
-        setCurrentTime(e.target.currentTime);
+        setDuration( audio.duration);
+         setCurrentTime(e.target.currentTime);
 
 
     }
@@ -43,8 +47,19 @@ const handleLoadedMetadata = (e) => {
 const handleSeekChange = (e) => {
     const time = e.target.value;
     audioRef.current.currentTime = time;
-    setCurrentTime(time);
+
 };
+const handelOnEnded = ()=>{
+
+
+    setIsPlaying(false);
+
+    setCurrentTime(duration);
+
+
+}
+
+
     return (
 <div className="flex w-full items-center py-2 px-3 gap-2 rounded-md bg-slate-800">
     <audio
@@ -53,6 +68,7 @@ const handleSeekChange = (e) => {
     controls
     onLoadedMetadata={handleLoadedMetadata}
     onTimeUpdate={handelUpdateTime}
+    onEnded={handelOnEnded}
     className="hidden"
 
 
@@ -73,14 +89,24 @@ const handleSeekChange = (e) => {
         />
     ) }
     <input type="range"
-    className="flex-1"
+    className="flex-1 min-w-0"
     min="0"
+    step="any"
     max={duration}
     value={currentTime}
+
     onChange={handleSeekChange}
     />
 
+
+<span className="text-xs whitespace-nowrap shrink-0">
+ {showTimeForAudioOrVido(currentTime)} /  {showTimeForAudioOrVido( duration)}
+
+</span>
+
+
 </div>
+
     );
 };
 
