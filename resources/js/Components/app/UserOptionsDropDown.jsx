@@ -1,5 +1,6 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import { router } from "@inertiajs/react";
 import {
     EllipsisVerticalIcon,
     LockClosedIcon,
@@ -24,6 +25,7 @@ export default function UserOptionsDropdown({ conversation }) {
 .then((res) => {
     if(res.data.message){
         console.log("user to change role to admin or ruglar");
+        router.reload({ only: ["conversations"] });
         emit("toast.show",`${res.data.message}`)
 
     }
@@ -42,10 +44,9 @@ export default function UserOptionsDropdown({ conversation }) {
         axios
             .post(route("user.blockUnblock", conversation.id))
             .then((res) => {
-                console.log(res.data.message);
-                console.log(res.message);
+                   router.reload({ only: ["conversations"] });
                 console.log("res.message");
-                console.log(res.data.message);
+
                 if(res.data.message){
         emit("toast.show",`${res.data.message} success ${conversation.name}`)
 

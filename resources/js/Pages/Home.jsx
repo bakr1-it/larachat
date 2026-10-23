@@ -189,7 +189,8 @@ return (
                                 </div>
                             )}
                         </div>
-                        <MessageInput conversation={selectedConversation}  />
+                        {!selectedConversation.blocked_at &&<MessageInput conversation={selectedConversation}  /> }
+
                     </>
                 )}
             </div>

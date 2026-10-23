@@ -101,7 +101,7 @@ return () =>{
                                     href={route('dashboard')}
                                     active={route().current('dashboard')}
                                 >
-                                    Dashboard
+                                    Messages
                                 </NavLink>
                             </div>
                         </div>

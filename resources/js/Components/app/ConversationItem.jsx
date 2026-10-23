@@ -1,6 +1,6 @@
 import UserAvatar from "./UserAvatar";
 import GroupAvatar from "./GroupAvatar";
-import UserOptionsDropdown from "./UserOptionsDropdown";
+import UserOptionsDropdown from "./UserOptionsDropDown";
 import { Link, usePage } from "@inertiajs/react";
 import { formatMessageDate } from "@/helpers";
 
@@ -9,6 +9,7 @@ const ConversationItem = ({
     selectedConversation = null,
     online ,
 }) => {
+
 
     const page = usePage();
     const currentUser = page.props.auth.user;
@@ -28,6 +29,7 @@ const ConversationItem = ({
             classes = " border-blue-500 bg-slate-900 ";
         }
     }
+
 return (
 
 
@@ -69,11 +71,11 @@ return (
                         </span>
                     )}
                 </div>
-                {conversation.last_message && (
+
                     <p className="text-xs text-nowrap overflow-hidden text-ellipsis text-gray-400">
-                        {conversation.last_message}
+                        {conversation.last_message  ?? "Files"}
                     </p>
-                )}
+
                     </div>
                     {!!currentUser?.is_admin && conversation.is_user && (
                         <UserOptionsDropdown conversation={conversation} />

@@ -14,7 +14,7 @@ const ChatLayout = ({ children }) => {
     const [localConversations, setLocalConversations] = useState([]);
     const [sortedConversations, setSortedConversations] = useState([]);
     const [onlineUsers, setOnlineUsers] = useState({});
-const [showGroupModal  ,setShowGroupModal] =useState(false);
+    const [showGroupModal  ,setShowGroupModal] =useState(false);
 
     /**
      * todo update last message
