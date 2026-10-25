@@ -21,9 +21,7 @@ public function lastMessage(){
 public function receiver(){
     return $this->belongsTo(User::class , "receiver_id");
 }
-public function lastMessaeg(){
-    return $this->belongsTo(Message::class,"last_message_id");
-}
+
 public static function getConversationForSidebar(User $user){
 $users= User::getUserExceptCurrentUser($user);
 $groups =Group::getGroupForCurrentUser($user);

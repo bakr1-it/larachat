@@ -67,7 +67,7 @@ function Home({ selectedConversation = null, messages = null }) {
     function messaegDeleted ({message}){
                 if(selectedConversation && selectedConversation.is_group && selectedConversation.id == message.group_id){
             setLocalMessages((prevMessage)=>{
-                return prevMessage.filter(message=> message.id !== id);
+                return prevMessage.filter(m=> m.id !== message.id);
             });
         }else if(selectedConversation && selectedConversation.is_user && (selectedConversation.id == message.sender_id || selectedConversation.id== message.receiver_id)){
             setLocalMessages((prevMessage)=>{

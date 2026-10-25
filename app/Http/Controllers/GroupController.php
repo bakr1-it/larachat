@@ -35,8 +35,8 @@ class GroupController extends Controller
         $data = $request->validated();
         $group->update($data);
         $user_ids= $data["user_ids"]??[];
-        $group->users()->detch();
-        $group->users()->attach(array_unique([...$user_ids , $request->user()->id]));
+        $group->users()->sync(array_unique([...$user_ids , $request->user()->id]));
+
         return redirect()->back();
 
 

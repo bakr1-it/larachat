@@ -31,13 +31,18 @@ return Inertia("Home",[
 
     }
     public function byGroup(Group $group){
-        $message= Message::where("group_id",$group->id)
-        ->latest()
-        ->paginate(10);
-        return Inertia("Home",[
-    "selectedConversation"=>$group->toConversationArray(),
-    "messages"=> MessageResource::collection($message)
-]);
+        if($group->users()->where("users.id",Auth::id())->exists()){
+
+            $message= Message::where("group_id",$group->id)
+            ->latest()
+            ->paginate(10);
+            return Inertia("Home",[
+                "selectedConversation"=>$group->toConversationArray(),
+                "messages"=> MessageResource::collection($message)
+                ]);
+                }else{
+                    return abort(403);
+                }
 
     }
 public function loadOlder(int $id)
@@ -106,7 +111,7 @@ if($files){
     return new MessageResource($message);
 
     }
-    public function destory(string $id){
+    public function destroy(string $id){
         $message = Message::findOrFail($id);
 
         $prevMessage= null;
@@ -133,18 +138,25 @@ $conversation = Conversation::where(function ($q) use ($message) {
 
 
         }
+        // dd($message , $group,$conversation);
 
 
 
 
         $message->delete();
         if($message->group_id) {
-$group->refresh();
-$prevMessage = $group->lastMessage ? new MessageResource($group->lastMessage): null;
+if($group){
+    $group->refresh();
+    $prevMessage = $group->lastMessage ? new MessageResource($group->lastMessage): null;
+
+}
 }else{
-$conversation->refresh();
+if($conversation){
+
+    $conversation->refresh();
     $prevMessage = $conversation->lastMessage ? new MessageResource($conversation->lastMessage): null;
-        }
+    }
+    }
 
         return response()->json(["message"=>"delete success","prevMessage"=> $prevMessage]);
     }

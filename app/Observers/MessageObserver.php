@@ -48,6 +48,7 @@ class MessageObserver
     {
         //
     }
+
 public function deleting(Message $message)
 {
 
@@ -66,7 +67,7 @@ public function deleting(Message $message)
                 ->latest()
                 ->first();
 
-            $group->last_message_id = $prevMessage?->id;
+            $group->last_message_id = $prevMessage->id;
             $group->save();
         }
     }
@@ -86,7 +87,7 @@ public function deleting(Message $message)
             ->latest()
             ->first();
 
-            $conversation->last_message_id = $prevMessage?->id;
+            $conversation->last_message_id = $prevMessage->id;
             $conversation->save();
         }
     }
