@@ -51,13 +51,16 @@ class MessageObserver
 
 public function deleting(Message $message)
 {
+    if($message->attachments->count() > 0){
 
-    $message->attachments->each(function ($attachment) {
-        $dir = dirname($attachment->path);
-        Storage::disk("public")->deleteDirectory($dir);
-    });
+            $message->attachments->each(function ($attachment) {
+                $dir = dirname($attachment->path);
+                Storage::disk("public")->deleteDirectory($dir);
+            });
 
-    $message->attachments()->delete();
+            $message->attachments()->delete();
+
+    }
 
     if ($message->group_id) {
         $group = Group::where("last_message_id", $message->id)->first();
@@ -67,8 +70,11 @@ public function deleting(Message $message)
                 ->latest()
                 ->first();
 
-            $group->last_message_id = $prevMessage->id;
-            $group->save();
+                    $group->last_message_id = $prevMessage?->id;
+                    $group->save();
+
+
+
         }
     }
     else {
@@ -87,8 +93,14 @@ public function deleting(Message $message)
             ->latest()
             ->first();
 
-            $conversation->last_message_id = $prevMessage->id;
-            $conversation->save();
+
+                $conversation->last_message_id = $prevMessage?->id;
+                $conversation->save();
+
+
+
+
+
         }
     }
 }

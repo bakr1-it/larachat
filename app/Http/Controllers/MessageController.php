@@ -47,7 +47,20 @@ return Inertia("Home",[
     }
 public function loadOlder(int $id)
 {
+
     $message= Message::findOrFail($id);
+    if($message->group_id ){
+       $group=  Group::findOrFail($message->group_id);
+       if(!$group->users()->where("users.id",Auth::id())->exists()){
+           abort(403);
+
+           }
+           }else{
+               if($message->sender_id !== Auth::id() &&  $message->receiver_id !== Auth::id() ){
+         abort(403);
+
+     }
+    }
     $messageData =$message->group_id
      ? Message::where("group_id", "=", $message->group_id)
             ->where("created_at", "<", $message->created_at)
@@ -96,7 +109,7 @@ if($files){
         $attachments[]= $attachment;
 
     }
-    $message->attachment = $attachments;
+    $message->attachments = $attachments;
 
     }
         if($receiverId){
