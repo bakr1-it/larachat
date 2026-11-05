@@ -2,8 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Group;
+use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 
 class StoreMessageRequest extends FormRequest
@@ -13,6 +16,11 @@ class StoreMessageRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        if($this->group_id){
+            $group= Group::findOrFail($this->group_id);
+           return $group->users()->where("users.id",Auth::id())->exists();
+
+        }
         return true;
     }
 
